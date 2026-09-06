@@ -85,3 +85,19 @@ TEST_F(ClickerTest, TrySetRepeatsWhenRunning)
 
     EXPECT_DEATH(clicker->setRepeats(5u), "");
 }
+
+TEST_F(ClickerTest, SetCoords)
+{
+    clicker->setCoords(5u, 10u);
+    EXPECT_CALL(*mouseMock, click(5u, 10u)).Times(1);
+
+    clicker->start();
+}
+
+TEST_F(ClickerTest, TrySetCoordsWhenRunning)
+{
+    GTEST_SKIP() << "Right now loop is not in separate thread";
+    clicker->start();
+
+    EXPECT_DEATH(clicker->setCoords(5u, 10u), "");
+}

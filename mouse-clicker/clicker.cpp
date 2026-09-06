@@ -33,6 +33,14 @@ auto Clicker::setRepeats(unsigned int repeats) -> void
     this->repeats = repeats;
 }
 
+auto Clicker::setCoords(unsigned int x, unsigned int y) -> void
+{
+    assert(!running);
+
+    this->x = x;
+    this->y = y;
+}
+
 auto Clicker::isRunning() const -> bool
 {
     return running;
@@ -44,7 +52,7 @@ auto Clicker::loop() -> void
 
     while (running && (repeats == 0 /* forever */ || repeat < repeats))
     {
-        mouse.click(0, 0);
+        mouse.click(x, y);
         ++repeat;
     }
     running = false;

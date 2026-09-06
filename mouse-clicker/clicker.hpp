@@ -20,12 +20,15 @@ public:
     auto stop() -> void;
 
     auto setRepeats(unsigned int repeats) -> void;
+    auto setCoords(unsigned int x, unsigned int y) -> void;
 
     [[nodiscard]] auto isRunning() const -> bool;
 
 private:
     bool running{ false };
     unsigned int repeats{ 1 }; // 0 - repeats forever, > 0 - repeats n times
+    unsigned int x{};
+    unsigned int y{};
 
     Mouse& mouse;
 
