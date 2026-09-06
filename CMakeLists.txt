@@ -6,8 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23)
 
 
-add_subdirectory(mouse)
-add_subdirectory(clicker)
+add_subdirectory(mouse-clicker)
 add_subdirectory(app)
 
 enable_testing()
