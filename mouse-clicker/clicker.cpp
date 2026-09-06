@@ -26,6 +26,13 @@ auto Clicker::stop() -> void
     running = false;
 }
 
+auto Clicker::setButton(Button button) -> void
+{
+    assert(!running);
+
+    this->button = button;
+}
+
 auto Clicker::setRepeats(unsigned int repeats) -> void
 {
     assert(!running);
@@ -52,7 +59,7 @@ auto Clicker::loop() -> void
 
     while (running && (repeats == 0 /* forever */ || repeat < repeats))
     {
-        mouse.click(x, y);
+        mouse.click(button, x, y);
         ++repeat;
     }
     running = false;

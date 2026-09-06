@@ -1,4 +1,5 @@
 #include "clicker.hpp"
+#include "mouse-button.hpp"
 #include "mouse.hpp"
 
 #include <gmock/gmock.h>
@@ -10,7 +11,7 @@ class MockMouse : public mouse_clicker::Mouse
 public:
     MockMouse() = default;
 
-    MOCK_METHOD(void, click, (unsigned int, unsigned int), (override));
+    MOCK_METHOD(void, click, (mouse_clicker::Button, unsigned int, unsigned int), (override));
 };
 
 class ClickerTest : public ::testing::Test
@@ -64,7 +65,7 @@ TEST_F(ClickerTest, TryStopWhenNotRunning)
 TEST_F(ClickerTest, ClickOnce)
 {
     clicker->setRepeats(1u);
-    EXPECT_CALL(*mouseMock, click(testing::_, testing::_)).Times(1);
+    EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(1);
 
     clicker->start();
 }
@@ -72,7 +73,7 @@ TEST_F(ClickerTest, ClickOnce)
 TEST_F(ClickerTest, ClickRepeat)
 {
     clicker->setRepeats(5u);
-    EXPECT_CALL(*mouseMock, click(testing::_, testing::_)).Times(5);
+    EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(5);
 
     clicker->start();
 }
@@ -89,7 +90,7 @@ TEST_F(ClickerTest, TrySetRepeatsWhenRunning)
 TEST_F(ClickerTest, SetCoords)
 {
     clicker->setCoords(5u, 10u);
-    EXPECT_CALL(*mouseMock, click(5u, 10u)).Times(1);
+    EXPECT_CALL(*mouseMock, click(testing::_, 5u, 10u)).Times(1);
 
     clicker->start();
 }
@@ -100,4 +101,21 @@ TEST_F(ClickerTest, TrySetCoordsWhenRunning)
     clicker->start();
 
     EXPECT_DEATH(clicker->setCoords(5u, 10u), "");
+}
+
+TEST_F(ClickerTest, SetButton)
+{
+    clicker->setButton(mouse_clicker::Button::RIGHT);
+    EXPECT_CALL(*mouseMock, click(mouse_clicker::Button::RIGHT, testing::_, testing::_));
+
+    clicker->start();
+}
+
+TEST_F(ClickerTest, TrySetButtonWhenRunning)
+{
+    GTEST_SKIP() << "Right now loop is not in separate thread";
+
+    clicker->start();
+
+    EXPECT_DEATH(clicker->setButton(mouse_clicker::Button::RIGHT), "");
 }

@@ -1,9 +1,11 @@
 #pragma once
 
+#include "mouse-button.hpp"
 #include "mouse.hpp"
 
 namespace mouse_clicker
 {
+
 class Clicker
 {
 public:
@@ -19,6 +21,7 @@ public:
     auto start() -> void;
     auto stop() -> void;
 
+    auto setButton(Button button) -> void;
     auto setRepeats(unsigned int repeats) -> void;
     auto setCoords(unsigned int x, unsigned int y) -> void;
 
@@ -29,6 +32,8 @@ private:
     unsigned int repeats{ 1 }; // 0 - repeats forever, > 0 - repeats n times
     unsigned int x{};
     unsigned int y{};
+    Button button{ Button::LEFT };
+
 
     Mouse& mouse;
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "mouse-button.hpp"
+
 namespace mouse_clicker
 {
 
@@ -15,7 +17,7 @@ public:
     Mouse(Mouse&&) = delete;
     auto operator=(Mouse&&) -> Mouse& = delete;
 
-    virtual auto click(unsigned int x, unsigned int y) -> void = 0;
+    virtual auto click(Button button, unsigned int x, unsigned int y) -> void = 0;
 };
 
 } // namespace mouse_clicker
