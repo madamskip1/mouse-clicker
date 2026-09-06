@@ -18,6 +18,7 @@ target_link_libraries(mouse-clicker-tests
     PRIVATE
         mouse-clicker
         gtest_main
+        gmock
 )
 
 gtest_discover_tests(mouse-clicker-tests)
