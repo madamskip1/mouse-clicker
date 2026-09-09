@@ -10,13 +10,23 @@ Clicker::Clicker(Mouse& mouse)
 {
 }
 
+Clicker::~Clicker()
+{
+    running = false;
+
+    if (loopThread.joinable())
+    {
+        loopThread.join();
+    }
+}
+
 auto Clicker::start() -> void
 {
     assert(!running);
 
     running = true;
 
-    loop(); // TODO: make it in separate thread
+    loopThread = std::thread(&Clicker::loop, this);
 }
 
 auto Clicker::stop() -> void
@@ -24,6 +34,7 @@ auto Clicker::stop() -> void
     assert(running);
 
     running = false;
+    loopThread.join();
 }
 
 auto Clicker::setButton(Button button) -> void

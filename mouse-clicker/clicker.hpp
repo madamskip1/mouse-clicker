@@ -3,6 +3,9 @@
 #include "mouse-button.hpp"
 #include "mouse.hpp"
 
+#include <thread>
+
+
 namespace mouse_clicker
 {
 
@@ -10,7 +13,7 @@ class Clicker
 {
 public:
     explicit Clicker(Mouse& mouse);
-    ~Clicker() = default;
+    ~Clicker();
 
     Clicker(const Clicker&) = delete;
     auto operator=(const Clicker&) -> Clicker& = delete;
@@ -34,6 +37,7 @@ private:
     unsigned int y{};
     Button button{ Button::LEFT };
 
+    std::thread loopThread;
 
     Mouse& mouse;
 

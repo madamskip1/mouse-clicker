@@ -5,6 +5,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <memory>
+#include <thread>
 
 class MockMouse : public mouse_clicker::Mouse
 {
@@ -29,25 +30,18 @@ protected:
 
 TEST_F(ClickerTest, Start)
 {
-    GTEST_SKIP() << "Right now loop is not in separate thread";
+    clicker->setRepeats(0);
 
     clicker->start();
 
     EXPECT_TRUE(clicker->isRunning());
-}
 
-TEST_F(ClickerTest, TryStartWhenAlreadyRunning)
-{
-    GTEST_SKIP() << "Right now loop is not in separate thread";
-
-    clicker->start();
-
-    EXPECT_DEATH(clicker->start(), "");
+    clicker->stop();
 }
 
 TEST_F(ClickerTest, Stop)
 {
-    GTEST_SKIP() << "Right now loop is not in separate thread";
+    clicker->setRepeats(0);
     clicker->start();
 
     clicker->stop();
@@ -55,67 +49,43 @@ TEST_F(ClickerTest, Stop)
     EXPECT_FALSE(clicker->isRunning());
 }
 
-TEST_F(ClickerTest, TryStopWhenNotRunning)
-{
-    GTEST_SKIP() << "Right now loop is not in separate thread";
-
-    EXPECT_DEATH(clicker->stop(), "");
-}
-
 TEST_F(ClickerTest, ClickOnce)
 {
-    clicker->setRepeats(1u);
     EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(1);
 
+    clicker->setRepeats(1u);
+
     clicker->start();
+    std::this_thread::sleep_for(10ms);
 }
 
 TEST_F(ClickerTest, ClickRepeat)
 {
-    clicker->setRepeats(5u);
     EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(5);
 
-    clicker->start();
-}
-
-TEST_F(ClickerTest, TrySetRepeatsWhenRunning)
-{
-    GTEST_SKIP() << "Right now loop is not in separate thread";
+    clicker->setRepeats(5u);
 
     clicker->start();
-
-    EXPECT_DEATH(clicker->setRepeats(5u), "");
+    std::this_thread::sleep_for(10ms);
 }
 
 TEST_F(ClickerTest, SetCoords)
 {
+    clicker->setRepeats(1);
+    EXPECT_CALL(*mouseMock, click(testing::_, 5u, 10u));
+
     clicker->setCoords(5u, 10u);
-    EXPECT_CALL(*mouseMock, click(testing::_, 5u, 10u)).Times(1);
 
     clicker->start();
-}
-
-TEST_F(ClickerTest, TrySetCoordsWhenRunning)
-{
-    GTEST_SKIP() << "Right now loop is not in separate thread";
-    clicker->start();
-
-    EXPECT_DEATH(clicker->setCoords(5u, 10u), "");
+    std::this_thread::sleep_for(10ms);
 }
 
 TEST_F(ClickerTest, SetButton)
 {
-    clicker->setButton(mouse_clicker::Button::RIGHT);
     EXPECT_CALL(*mouseMock, click(mouse_clicker::Button::RIGHT, testing::_, testing::_));
 
-    clicker->start();
-}
-
-TEST_F(ClickerTest, TrySetButtonWhenRunning)
-{
-    GTEST_SKIP() << "Right now loop is not in separate thread";
+    clicker->setButton(mouse_clicker::Button::RIGHT);
 
     clicker->start();
-
-    EXPECT_DEATH(clicker->setButton(mouse_clicker::Button::RIGHT), "");
+    std::this_thread::sleep_for(10ms);
 }
