@@ -19,6 +19,7 @@ target_link_libraries(mouse-clicker-app
     PRIVATE
         Qt::Core
         Qt::Widgets
+        mouse-clicker
 )
 
 target_include_directories(mouse-clicker-app

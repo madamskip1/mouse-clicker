@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QMainWindow>
+#include <clicker.hpp>
+#include <memory>
+#include <mouse.hpp>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -19,4 +22,9 @@ public:
 
 private:
     Ui::MainWindow* ui;
+    std::unique_ptr<mouse_clicker::Mouse> mouse;
+    mouse_clicker::Clicker clicker;
+
+    void on_StartButton_clicked();
+    void on_StopButton_clicked();
 };
