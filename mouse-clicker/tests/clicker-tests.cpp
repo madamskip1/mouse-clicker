@@ -2,10 +2,14 @@
 #include "mouse-button.hpp"
 #include "mouse.hpp"
 
+#include <chrono>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <memory>
 #include <thread>
+
+using namespace std::chrono_literals;
+
 
 class MockMouse : public mouse_clicker::Mouse
 {
@@ -88,4 +92,16 @@ TEST_F(ClickerTest, SetButton)
 
     clicker->start();
     std::this_thread::sleep_for(10ms);
+}
+
+TEST_F(ClickerTest, SetInterval)
+{
+    clicker->setRepeats(10); // doesn't matter, we stop after 3 clicks
+    EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(3);
+
+    clicker->setInterval(20ms);
+
+    clicker->start();
+    std::this_thread::sleep_for(45ms); // Clicked when starting, then twice after 20ms and 40ms
+    clicker->stop();
 }

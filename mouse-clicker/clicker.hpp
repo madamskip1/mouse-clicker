@@ -3,6 +3,7 @@
 #include "mouse-button.hpp"
 #include "mouse.hpp"
 
+#include <chrono>
 #include <thread>
 
 
@@ -28,6 +29,12 @@ public:
     auto setRepeats(unsigned int repeats) -> void;
     auto setCoords(unsigned int x, unsigned int y) -> void;
 
+    template <typename Rep, typename Period>
+    void setInterval(std::chrono::duration<Rep, Period> duration)
+    {
+        interval = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    }
+
     [[nodiscard]] auto isRunning() const -> bool;
 
 private:
@@ -37,6 +44,7 @@ private:
     unsigned int y{};
     Button button{ Button::LEFT };
 
+    std::chrono::milliseconds interval{ 0 };
     std::thread loopThread;
 
     Mouse& mouse;

@@ -72,6 +72,11 @@ auto Clicker::loop() -> void
     {
         mouse.click(button, x, y);
         ++repeat;
+
+        if (interval.count() > 0)
+        {
+            std::this_thread::sleep_for(interval);
+        }
     }
     running = false;
 }
