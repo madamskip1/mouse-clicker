@@ -43,6 +43,17 @@ TEST_F(ClickerTest, Start)
     clicker->stop();
 }
 
+TEST_F(ClickerTest, StartTwice)
+{
+    clicker->start();
+    std::this_thread::sleep_for(15ms); // make sure single click is done
+
+    clicker->start();
+    std::this_thread::sleep_for(15ms); // make sure single click is done
+
+    EXPECT_FALSE(clicker->isRunning());
+}
+
 TEST_F(ClickerTest, Stop)
 {
     clicker->setRepeats(0);

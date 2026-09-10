@@ -14,11 +14,6 @@ Clicker::~Clicker()
 {
     running = false;
     loopSemaphore.release();
-
-    if (loopThread.joinable())
-    {
-        loopThread.join();
-    }
 }
 
 auto Clicker::start() -> void
@@ -28,7 +23,7 @@ auto Clicker::start() -> void
     loopSemaphore.try_acquire();
     running = true;
 
-    loopThread = std::thread(&Clicker::loop, this);
+    loopThread = std::jthread(&Clicker::loop, this);
 }
 
 auto Clicker::stop() -> void

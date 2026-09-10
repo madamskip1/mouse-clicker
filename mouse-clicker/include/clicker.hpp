@@ -46,7 +46,7 @@ private:
     Button button{ Button::LEFT };
 
     std::chrono::milliseconds interval{ 0 };
-    std::thread loopThread;
+    std::jthread loopThread;
     std::binary_semaphore loopSemaphore{ 0 };
 
     Mouse& mouse;
