@@ -4,6 +4,7 @@
 #include "mouse.hpp"
 
 #include <chrono>
+#include <semaphore>
 #include <thread>
 
 
@@ -46,6 +47,7 @@ private:
 
     std::chrono::milliseconds interval{ 0 };
     std::thread loopThread;
+    std::binary_semaphore loopSemaphore{ 0 };
 
     Mouse& mouse;
 

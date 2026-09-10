@@ -53,6 +53,21 @@ TEST_F(ClickerTest, Stop)
     EXPECT_FALSE(clicker->isRunning());
 }
 
+TEST_F(ClickerTest, StopInterval)
+{
+    EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(1); // first click is immediately
+    clicker->setRepeats(0);
+    clicker->setInterval(1000ms);
+    clicker->start();
+    std::this_thread::sleep_for(10ms); // To be sure that the first click is done
+
+    const auto beforeStop = std::chrono::steady_clock::now();
+    clicker->stop();
+    const auto elapsed = std::chrono::steady_clock::now() - beforeStop;
+
+    EXPECT_LT(std::chrono::duration_cast<std::chrono::milliseconds>(elapsed), 50ms);
+}
+
 TEST_F(ClickerTest, ClickOnce)
 {
     EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(1);
@@ -99,9 +114,9 @@ TEST_F(ClickerTest, SetInterval)
     clicker->setRepeats(10); // doesn't matter, we stop after 3 clicks
     EXPECT_CALL(*mouseMock, click(testing::_, testing::_, testing::_)).Times(3);
 
-    clicker->setInterval(20ms);
+    clicker->setInterval(30ms);
 
     clicker->start();
-    std::this_thread::sleep_for(45ms); // Clicked when starting, then twice after 20ms and 40ms
+    std::this_thread::sleep_for(75ms); // Clicked when starting, then twice after 30ms and 60ms
     clicker->stop();
 }

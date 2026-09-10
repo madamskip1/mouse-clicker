@@ -13,6 +13,7 @@ Clicker::Clicker(Mouse& mouse)
 Clicker::~Clicker()
 {
     running = false;
+    loopSemaphore.release();
 
     if (loopThread.joinable())
     {
@@ -24,6 +25,7 @@ auto Clicker::start() -> void
 {
     assert(!running);
 
+    loopSemaphore.try_acquire();
     running = true;
 
     loopThread = std::thread(&Clicker::loop, this);
@@ -34,6 +36,7 @@ auto Clicker::stop() -> void
     assert(running);
 
     running = false;
+    loopSemaphore.release();
     loopThread.join();
 }
 
@@ -75,7 +78,7 @@ auto Clicker::loop() -> void
 
         if (interval.count() > 0)
         {
-            std::this_thread::sleep_for(interval);
+            loopSemaphore.try_acquire_for(interval);
         }
     }
     running = false;
