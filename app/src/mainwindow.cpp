@@ -24,6 +24,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_StartButton_clicked()
 {
+    const auto repeatsValue = ui->RepeatsSpinBox->value();
+    clicker.setRepeats(repeatsValue);
+
+    const auto intervalMilisecondsValue = std::chrono::milliseconds(ui->IntervalMillisecondsSpinBox->value());
+    const auto intervalSecondsValue = std::chrono::seconds(ui->IntervalSecondsSpinBox->value());
+    const auto intervalMinutesValue = std::chrono::minutes(ui->IntervalMinutesSpinBox->value());
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(intervalSecondsValue + intervalMinutesValue + intervalMilisecondsValue);
+    clicker.setInterval(duration);
+
     clicker.start();
 }
 
