@@ -2,9 +2,11 @@
 #include "mouse.hpp"
 
 #include <X11/Xlib.h>
+#include <X11/extensions/XTest.h>
 #include <cassert>
 #include <memory>
 #include <print>
+#include <string>
 
 namespace mouse_clicker
 {
@@ -46,25 +48,38 @@ MouseLinux::~MouseLinux()
 
 auto MouseLinux::click(Button button, unsigned int x, unsigned int y) -> void
 {
-    moveCursor(x, y);
+    unsigned int x11Button{};
+    std::string buttonString;
 
-    auto mouseButtonToString = [](Button button) -> std::string {
-        using enum mouse_clicker::Button;
+    using enum mouse_clicker::Button;
+    switch (button)
+    {
+    case LEFT:
+        x11Button = Button1;
+        buttonString = "left";
+        break;
+    case MIDDLE:
+        x11Button = Button2;
+        buttonString = "middle";
+        break;
+    case RIGHT:
+        x11Button = Button3;
+        buttonString = "right";
+        break;
+    default:
+        assert(false);
+    }
 
-        switch (button)
-        {
-        case LEFT:
-            return "left";
-        case MIDDLE:
-            return "middle";
-        case RIGHT:
-            return "right";
-        default:
-            return "unknown";
-        }
-    };
+    // For now move and click are disabled
+    // for easier development
+    // Remove comments to enable
 
-    std::println("Clicking {} at ({}, {})", mouseButtonToString(button), x, y);
+    // moveCursor(x, y);
+
+    // XTestFakeButtonEvent(display, x11Button, True, CurrentTime); // press
+    // XTestFakeButtonEvent(display, x11Button, False, CurrentTime); // release
+
+    std::println("Clicking {} at ({}, {})", buttonString, x, y);
 }
 
 auto MouseLinux::moveCursor(unsigned int x, unsigned int y) -> void
