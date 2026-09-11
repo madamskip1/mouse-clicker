@@ -11,4 +11,11 @@ target_include_directories(mouse-clicker
         include
 )
 
+find_package(X11 REQUIRED)
+
+target_link_libraries(mouse-clicker
+    PRIVATE
+        X11::X11
+)
+
 add_subdirectory(tests)
