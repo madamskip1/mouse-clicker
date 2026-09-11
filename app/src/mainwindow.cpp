@@ -1,12 +1,12 @@
 #include "mainwindow.hpp"
 
-#include "mouse-linux.hpp"
+#include "mouse.hpp"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      mouse(std::make_unique<mouse_clicker::MouseLinux>()),
+      mouse(mouse_clicker::createMouse()),
       clicker(*mouse)
 {
     ui->setupUi(this);

@@ -2,6 +2,8 @@
 
 #include "mouse-button.hpp"
 
+#include <memory>
+
 namespace mouse_clicker
 {
 
@@ -19,5 +21,7 @@ public:
 
     virtual auto click(Button button, unsigned int x, unsigned int y) -> void = 0;
 };
+
+auto createMouse() -> std::unique_ptr<Mouse>;
 
 } // namespace mouse_clicker
