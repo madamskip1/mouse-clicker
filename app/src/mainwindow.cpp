@@ -33,6 +33,10 @@ void MainWindow::on_StartButton_clicked()
     const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(intervalSecondsValue + intervalMinutesValue + intervalMilisecondsValue);
     clicker.setInterval(duration);
 
+    const auto coordsX = ui->CoordsXSpinBox->value();
+    const auto coordsY = ui->CoordsYSpinBox->value();
+    clicker.setCoords(coordsX, coordsY);
+
     clicker.start();
 }
 
