@@ -1,7 +1,45 @@
 #include "mainwindow.hpp"
 
+#include "mouse-button.hpp"
 #include "mouse.hpp"
 #include "ui_mainwindow.h"
+
+#include <QString>
+#include <cstdint>
+#include <unordered_map>
+
+namespace
+{
+
+enum class ButtonCombo : std::uint8_t
+{
+    LEFT,
+    RIGHT,
+    MIDDLE
+};
+
+static constexpr auto qtToMouseClickerButton(ButtonCombo button) -> mouse_clicker::Button
+{
+    switch (button)
+    {
+    case ButtonCombo::LEFT:
+        return mouse_clicker::Button::LEFT;
+    case ButtonCombo::RIGHT:
+        return mouse_clicker::Button::RIGHT;
+    case ButtonCombo::MIDDLE:
+        return mouse_clicker::Button::MIDDLE;
+    default:
+        assert(false);
+    }
+}
+
+static const std::unordered_map<ButtonCombo, std::string> buttonComboToString = {
+    {   ButtonCombo::LEFT,   "Left" },
+    {  ButtonCombo::RIGHT,  "Right" },
+    { ButtonCombo::MIDDLE, "Middle" }
+};
+
+} // namespace
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
@@ -10,6 +48,11 @@ MainWindow::MainWindow(QWidget* parent)
       clicker(*mouse)
 {
     ui->setupUi(this);
+
+    for (const auto& [button, buttonString] : buttonComboToString)
+    {
+        ui->ButtonComboBox->addItem(QString::fromStdString(buttonString), std::to_underlying(button));
+    }
 
     connect(ui->StartButton, &QPushButton::clicked,
             this, &MainWindow::on_StartButton_clicked);
@@ -36,6 +79,9 @@ void MainWindow::on_StartButton_clicked()
     const auto coordsX = ui->CoordsXSpinBox->value();
     const auto coordsY = ui->CoordsYSpinBox->value();
     clicker.setCoords(coordsX, coordsY);
+
+    const auto button = qtToMouseClickerButton(ui->ButtonComboBox->currentData().value<ButtonCombo>());
+    clicker.setButton(button);
 
     clicker.start();
 }
