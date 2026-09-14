@@ -81,10 +81,15 @@ auto Clicker::loop() -> void
 {
     unsigned int repeat = 0;
 
-    while (running && (repeats == 0 /* forever */ || repeat < repeats))
+    while (running)
     {
         mouse.click(button, x, y);
         ++repeat;
+
+        if (repeats != 0 && repeat >= repeats) // repeats == 0 means forever
+        {
+            break;
+        }
 
         if (interval.count() > 0)
         {
