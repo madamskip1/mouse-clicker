@@ -4,6 +4,7 @@
 #include "mouse.hpp"
 #include "ui_mainwindow.h"
 
+#include <QMetaObject>
 #include <QString>
 #include <cstdint>
 #include <unordered_map>
@@ -55,9 +56,18 @@ MainWindow::MainWindow(QWidget* parent)
     }
 
     connect(ui->StartButton, &QPushButton::clicked,
-            this, &MainWindow::on_StartButton_clicked);
+            this, &MainWindow::onStartButtonClicked);
     connect(ui->StopButton, &QPushButton::clicked,
-            this, &MainWindow::on_StopButton_clicked);
+            this, &MainWindow::onStopButtonClicked);
+
+    clicker.setOnStartCallback([this]() {
+        QMetaObject::invokeMethod(this, &MainWindow::onMouseClickerStart, Qt::QueuedConnection);
+    });
+    clicker.setOnStopCallback([this]() {
+        QMetaObject::invokeMethod(this, &MainWindow::onMouseClickerStop, Qt::QueuedConnection);
+    });
+
+    onMouseClickerStop();
 }
 
 MainWindow::~MainWindow()
@@ -65,7 +75,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_StartButton_clicked()
+void MainWindow::onStartButtonClicked()
 {
     const auto repeatsValue = ui->RepeatsSpinBox->value();
     clicker.setRepeats(repeatsValue);
@@ -86,7 +96,39 @@ void MainWindow::on_StartButton_clicked()
     clicker.start();
 }
 
-void MainWindow::on_StopButton_clicked()
+void MainWindow::onStopButtonClicked()
 {
     clicker.stop();
+}
+
+void MainWindow::onMouseClickerStart()
+{
+    this->ui->StartButton->setEnabled(false);
+    this->ui->StopButton->setEnabled(true);
+
+    this->ui->CoordsXSpinBox->setReadOnly(true);
+    this->ui->CoordsYSpinBox->setReadOnly(true);
+
+    this->ui->ButtonComboBox->setAttribute(Qt::WA_TransparentForMouseEvents);
+    this->ui->RepeatsSpinBox->setReadOnly(true);
+
+    this->ui->IntervalMinutesSpinBox->setReadOnly(true);
+    this->ui->IntervalSecondsSpinBox->setReadOnly(true);
+    this->ui->IntervalMillisecondsSpinBox->setReadOnly(true);
+}
+
+void MainWindow::onMouseClickerStop()
+{
+    this->ui->StartButton->setEnabled(true);
+    this->ui->StopButton->setEnabled(false);
+
+    this->ui->CoordsXSpinBox->setReadOnly(false);
+    this->ui->CoordsYSpinBox->setReadOnly(false);
+
+    this->ui->ButtonComboBox->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    this->ui->RepeatsSpinBox->setReadOnly(false);
+
+    this->ui->IntervalMinutesSpinBox->setReadOnly(false);
+    this->ui->IntervalSecondsSpinBox->setReadOnly(false);
+    this->ui->IntervalMillisecondsSpinBox->setReadOnly(false);
 }

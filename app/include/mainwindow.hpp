@@ -25,6 +25,9 @@ private:
     std::unique_ptr<mouse_clicker::Mouse> mouse;
     mouse_clicker::Clicker clicker;
 
-    void on_StartButton_clicked();
-    void on_StopButton_clicked();
+    void onStartButtonClicked();
+    void onStopButtonClicked();
+
+    void onMouseClickerStart();
+    void onMouseClickerStop();
 };

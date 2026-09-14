@@ -4,6 +4,7 @@
 #include "mouse.hpp"
 
 #include <chrono>
+#include <functional>
 #include <semaphore>
 #include <thread>
 
@@ -36,6 +37,9 @@ public:
         interval = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
     }
 
+    auto setOnStartCallback(std::function<void()> callback) -> void;
+    auto setOnStopCallback(std::function<void()> callback) -> void;
+
     [[nodiscard]] auto isRunning() const -> bool;
 
 private:
@@ -48,6 +52,9 @@ private:
     std::chrono::milliseconds interval{ 0 };
     std::jthread loopThread;
     std::binary_semaphore loopSemaphore{ 0 };
+
+    std::function<void()> onStartCallback;
+    std::function<void()> onStopCallback;
 
     Mouse& mouse;
 

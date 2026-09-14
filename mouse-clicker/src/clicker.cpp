@@ -24,6 +24,11 @@ auto Clicker::start() -> void
     running = true;
 
     loopThread = std::jthread(&Clicker::loop, this);
+
+    if (onStartCallback)
+    {
+        onStartCallback();
+    }
 }
 
 auto Clicker::stop() -> void
@@ -57,6 +62,16 @@ auto Clicker::setCoords(unsigned int x, unsigned int y) -> void
     this->y = y;
 }
 
+auto Clicker::setOnStartCallback(std::function<void()> callback) -> void
+{
+    onStartCallback = std::move(callback);
+}
+
+auto Clicker::setOnStopCallback(std::function<void()> callback) -> void
+{
+    onStopCallback = std::move(callback);
+}
+
 auto Clicker::isRunning() const -> bool
 {
     return running;
@@ -77,6 +92,11 @@ auto Clicker::loop() -> void
         }
     }
     running = false;
+
+    if (onStopCallback)
+    {
+        onStopCallback();
+    }
 }
 
 } // namespace mouse_clicker
