@@ -43,18 +43,20 @@ public:
     [[nodiscard]] auto isRunning() const -> bool;
 
 private:
-    bool running{ false };
-    unsigned int repeats{ 1 }; // 0 - repeats forever, > 0 - repeats n times
-    unsigned int x{};
-    unsigned int y{};
-    Button button{ Button::LEFT };
-
-    std::chrono::milliseconds interval{ 0 };
-    std::jthread loopThread;
-    std::binary_semaphore loopSemaphore{ 0 };
-
     std::function<void()> onStartCallback;
     std::function<void()> onStopCallback;
+
+    std::jthread loopThread;
+
+    std::binary_semaphore loopSemaphore{ 0 };
+
+    std::chrono::milliseconds interval;
+    unsigned int repeats;
+    unsigned int x;
+    unsigned int y;
+
+    Button button;
+    bool running;
 
     Mouse& mouse;
 
