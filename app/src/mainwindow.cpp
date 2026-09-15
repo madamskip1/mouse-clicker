@@ -22,7 +22,7 @@ enum class ButtonCombo : std::uint8_t
     MIDDLE
 };
 
-static constexpr auto qtToMouseClickerButton(ButtonCombo button) -> mouse_clicker::Button
+constexpr auto qtToMouseClickerButton(ButtonCombo button) -> mouse_clicker::Button
 {
     switch (button)
     {
@@ -37,7 +37,7 @@ static constexpr auto qtToMouseClickerButton(ButtonCombo button) -> mouse_clicke
     }
 }
 
-static constexpr std::array<std::pair<ButtonCombo, std::string>, 3> buttonComboToString = {
+constexpr std::array<std::pair<ButtonCombo, std::string>, 3> buttonComboToString = {
     { { ButtonCombo::LEFT, "Left" },
      { ButtonCombo::RIGHT, "Right" },
      { ButtonCombo::MIDDLE, "Middle" } }
