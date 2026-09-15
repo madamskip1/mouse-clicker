@@ -12,13 +12,13 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class MainWindow final : public QMainWindow
 {
     Q_OBJECT
 
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() final;
 
     MainWindow(const MainWindow&) = delete;
     auto operator=(const MainWindow&) -> MainWindow& = delete;
