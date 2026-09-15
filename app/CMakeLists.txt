@@ -26,3 +26,10 @@ target_include_directories(mouse-clicker-app
     PRIVATE
         include
 )
+
+
+add_custom_command(TARGET mouse-clicker-app POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:mouse-clicker-app>
+        ${CMAKE_BINARY_DIR}/$<TARGET_FILE_NAME:mouse-clicker-app>
+)
