@@ -6,8 +6,11 @@
 
 #include <QMetaObject>
 #include <QString>
+#include <array>
 #include <cstdint>
-#include <unordered_map>
+#include <string>
+#include <utility>
+
 
 namespace
 {
@@ -34,10 +37,10 @@ static constexpr auto qtToMouseClickerButton(ButtonCombo button) -> mouse_clicke
     }
 }
 
-static const std::unordered_map<ButtonCombo, std::string> buttonComboToString = {
-    {   ButtonCombo::LEFT,   "Left" },
-    {  ButtonCombo::RIGHT,  "Right" },
-    { ButtonCombo::MIDDLE, "Middle" }
+static constexpr std::array<std::pair<ButtonCombo, std::string>, 3> buttonComboToString = {
+    { { ButtonCombo::LEFT, "Left" },
+     { ButtonCombo::RIGHT, "Right" },
+     { ButtonCombo::MIDDLE, "Middle" } }
 };
 
 } // namespace
