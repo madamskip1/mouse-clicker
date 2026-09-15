@@ -20,8 +20,15 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
+    MainWindow(const MainWindow&) = delete;
+    auto operator=(const MainWindow&) -> MainWindow& = delete;
+
+    MainWindow(MainWindow&&) = delete;
+    auto operator=(MainWindow&&) -> MainWindow& = delete;
+
 private:
     Ui::MainWindow* ui;
+
     std::unique_ptr<mouse_clicker::Mouse> mouse;
     mouse_clicker::Clicker clicker;
 
