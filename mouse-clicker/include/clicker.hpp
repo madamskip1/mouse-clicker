@@ -50,13 +50,13 @@ private:
 
     std::binary_semaphore loopSemaphore{ 0 };
 
-    std::chrono::milliseconds interval;
-    unsigned int repeats;
-    unsigned int x;
-    unsigned int y;
+    std::chrono::milliseconds interval{ 0 };
+    unsigned int repeats{ 1 };
+    unsigned int x{ 0 };
+    unsigned int y{ 0 };
 
-    Button button;
-    bool running;
+    Button button{ Button::LEFT };
+    bool running{ false };
 
     Mouse& mouse;
 
