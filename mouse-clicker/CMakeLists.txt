@@ -3,7 +3,7 @@ add_library(mouse-clicker)
 target_sources(mouse-clicker
     PRIVATE
         src/clicker.cpp
-        src/mouse-linux.cpp
+        src/mouse-linux-x11.cpp
 )
 
 target_include_directories(mouse-clicker

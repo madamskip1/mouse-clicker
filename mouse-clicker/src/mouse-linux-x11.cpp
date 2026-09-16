@@ -11,17 +11,17 @@
 namespace mouse_clicker
 {
 
-class MouseLinux final : public Mouse
+class MouseLinuxX11 final : public Mouse
 {
 public:
-    MouseLinux();
-    ~MouseLinux();
+    MouseLinuxX11();
+    ~MouseLinuxX11();
 
-    MouseLinux(const MouseLinux&) = delete;
-    auto operator=(const MouseLinux&) -> MouseLinux& = delete;
+    MouseLinuxX11(const MouseLinuxX11&) = delete;
+    auto operator=(const MouseLinuxX11&) -> MouseLinuxX11& = delete;
 
-    MouseLinux(MouseLinux&&) = delete;
-    auto operator=(MouseLinux&&) -> MouseLinux& = delete;
+    MouseLinuxX11(MouseLinuxX11&&) = delete;
+    auto operator=(MouseLinuxX11&&) -> MouseLinuxX11& = delete;
 
     auto click(Button button, unsigned int x, unsigned int y) -> void final;
 
@@ -31,13 +31,13 @@ private:
     auto moveCursor(unsigned int x, unsigned int y) -> void;
 };
 
-MouseLinux::MouseLinux()
+MouseLinuxX11::MouseLinuxX11()
     : display(XOpenDisplay(nullptr))
 {
     assert(display != nullptr);
 }
 
-MouseLinux::~MouseLinux()
+MouseLinuxX11::~MouseLinuxX11()
 {
     if (display != nullptr)
     {
@@ -46,7 +46,7 @@ MouseLinux::~MouseLinux()
 }
 
 
-auto MouseLinux::click(Button button, unsigned int x, unsigned int y) -> void
+auto MouseLinuxX11::click(Button button, unsigned int x, unsigned int y) -> void
 {
     unsigned int x11Button{};
     std::string buttonString;
@@ -82,7 +82,7 @@ auto MouseLinux::click(Button button, unsigned int x, unsigned int y) -> void
     std::println("Clicking {} at ({}, {})", buttonString, x, y);
 }
 
-auto MouseLinux::moveCursor(unsigned int x, unsigned int y) -> void
+auto MouseLinuxX11::moveCursor(unsigned int x, unsigned int y) -> void
 {
     const auto rootWindow = DefaultRootWindow(display);
 
@@ -92,7 +92,7 @@ auto MouseLinux::moveCursor(unsigned int x, unsigned int y) -> void
 
 auto createMouse() -> std::unique_ptr<Mouse>
 {
-    return std::make_unique<MouseLinux>();
+    return std::make_unique<MouseLinuxX11>();
 }
 
 } // namespace mouse_clicker
