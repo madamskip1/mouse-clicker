@@ -70,16 +70,10 @@ auto MouseLinuxX11::click(Button button, unsigned int x, unsigned int y) -> void
         assert(false);
     }
 
-    // For now move and click are disabled
-    // for easier development
-    // Remove comments to enable
+    moveCursor(x, y);
 
-    // moveCursor(x, y);
-
-    // XTestFakeButtonEvent(display, x11Button, True, CurrentTime); // press
-    // XTestFakeButtonEvent(display, x11Button, False, CurrentTime); // release
-
-    std::println("Clicking {} at ({}, {})", buttonString, x, y);
+    XTestFakeButtonEvent(display, x11Button, True, CurrentTime);  // press
+    XTestFakeButtonEvent(display, x11Button, False, CurrentTime); // release
 }
 
 auto MouseLinuxX11::moveCursor(unsigned int x, unsigned int y) -> void
